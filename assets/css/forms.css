@@ -1,0 +1,14 @@
+label {
+  font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  margin-top: var(--spacer-8);
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--dark-dark);
+  border-radius: 4px;
+}

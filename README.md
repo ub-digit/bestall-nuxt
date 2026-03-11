@@ -2,6 +2,24 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Biblio IDs
+
+### bestall-staging
+
+2710720 - finns bara ett ex och det är försenat och utlånat. 0 personer i kö på denna bibpost.
+
+2296824 - finns 16 tillgängliga, är kursbok har ej hemlån alla utom ett har "hämta själv från hyllan". Ett tillgängligt exemplar går att beställa. Ett utlånat exemplar som har status försenad.
+
+1940926 - har ett ulånat ex med slutdatum.
+
+8503 - är bok och är endast läsesal. Inga utlånade ex
+
+189763 - subscription. Prenumerationer på olika bibliotek
+
+176500 - subscription. fornvännen. 1 prenumeration på ett bibliotek
+
+178300 - subscritopn. 2 prenumerationer på ett biblioktek.
+
 ## Setup
 
 Make sure to install dependencies:

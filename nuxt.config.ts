@@ -1,13 +1,73 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
+  runtimeConfig: {
+    apiSecret: process.env.SECRET_KEY || "NOT_A_SECRET",
+    authBase: process.env.AUTH_BASE_URL || "https://auth.not-an-auth.com",
+    githubClientId: process.env.GITHUB_CLIENT_ID || "not_your_github_client_id",
+    githubClientSecret:
+      process.env.GITHUB_CLIENT_SECRET || "not_your_github_client_secret",
+    guClientId: process.env.GU_CLIENT_ID || "not_your_gu_client_id",
+    guClientSecret: process.env.GU_CLIENT_SECRET || "not_your_gu_client_secret",
+
+    kohaUser: process.env.KOHA_USER || "not_a_user",
+    kohaPwd: process.env.KOHA_PWD || "not_a_pwd",
+
+    public: {
+      debugInfo: process.env.DEBUG_INFO === "true" || false,
+      enabledAuth: process.env.ENABLED_AUTH || "github",
+      kohaAuthUrl:
+        process.env.KOHA_AUTH_URL || "https://koha-auth.not-an-auth.com/auth",
+      apiBase: process.env.API_BASE || "https://api.not-an-api.com",
+      hideGUAuthParamName:
+        process.env.HIDE_GU_AUTH_PARAM_NAME || "hideGUAuthParam",
+      hideGUAuthParamValue:
+        process.env.HIDE_GU_AUTH_PARAM_VALUE || "hideGUAuthValue",
+      localeParamName: process.env.LOCALE_PARAM_NAME || "language",
+      myLoansUrl:
+        process.env.NUXT_PUBLIC_MYLOANS_URL ||
+        "https://not-myloans.example.com",
+      applicationIsClosed:
+        process.env.NUXT_PUBLIC_APPLICATION_IS_CLOSED === "true" ||
+        false /* default to false if not set, since it's a new feature and we don't want to accidentally break things for users who haven't set it up yet. */,
+      dateFormat: process.env.NUXT_PUBLIC_DATE_FORMAT || "sv-SE",
+    },
+  },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "en",
+      },
+      link: [
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "https://assets.ub.gu.se/img/favicons/favicon.ico",
+        },
+      ],
+    },
+  },
+  css: ["~/assets/css/main.css"],
+
+  ssr: true,
+
   compatibilityDate: "2025-07-15",
-  devtools: { enabled: true },
-  modules: ["@nuxtjs/i18n"],
+  devtools: { enabled: false },
+  modules: ["@nuxtjs/i18n", "@sidebase/nuxt-auth"],
   i18n: {
+    //vueI18n: "./i18n/i18n.config.ts",
+    strategy: "prefix_except_default",
     defaultLocale: "sv",
     locales: [
       { code: "en", name: "English", file: "en.json" },
-      { code: "sv", name: "Swedish", file: "sv.json" },
+      { code: "sv", name: "Svenska", file: "sv.json" },
     ],
+    compilation: {
+      strictMessage: false /* allows html in translations */,
+      escapeHtml: false,
+    },
+  },
+  auth: {
+    globalAppMiddleware: false,
   },
 });
