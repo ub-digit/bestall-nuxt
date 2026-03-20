@@ -3,6 +3,8 @@ import { Item } from "~/types/Biblio";
 import { SubscriptionGroup } from "~/types/Biblio";
 import { Subscription } from "~/types/Biblio";
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+
   const { id } = event.context.params as { id: string };
   let { locale } = getQuery(event) as { locale?: string };
 
@@ -40,10 +42,7 @@ export default defineEventHandler(async (event) => {
       sublocation_name: getSublocationName(biblio, item, locale),
     }));
 
-    if (
-      !biblio.subscriptiongroups?.length &&
-      biblio.record_type === "monograph"
-    ) {
+    if (!biblio.subscriptiongroups?.length && !biblio.has_item_level_queue) {
       const extendedBiblio = {
         ...biblio,
         viewType: "book",
@@ -57,7 +56,7 @@ export default defineEventHandler(async (event) => {
       return extendedBiblio;
     } else if (
       biblio.subscriptiongroups?.length ||
-      biblio.record_type === "serial"
+      biblio.has_item_level_queue
     ) {
       const extendedBiblio = {
         ...biblio,
@@ -69,7 +68,6 @@ export default defineEventHandler(async (event) => {
             subscriptions: group.subscriptions.map(
               (subscription: Subscription) => ({
                 ...subscription,
-                can_be_ordered: true,
                 location_name:
                   locale === "en"
                     ? subscription.location_name_en
@@ -87,13 +85,21 @@ export default defineEventHandler(async (event) => {
         ...extendedBiblio,
         viewType: "subscription",
       };
+    } else if (
+      !biblio.subscriptiongroups?.length &&
+      biblio.has_item_level_queue
+    ) {
+      return {
+        ...biblio,
+        viewType: "collection",
+      };
     }
   };
 
   try {
     if (id) {
       const data: any = await $fetch(
-        `https://bestall-server-lab.ub.gu.se/api/biblios/${id}?items_on_subscriptions=true`,
+        `${runtimeConfig.public.apiBase}/biblios/${id}?items_on_subscriptions=true`,
       );
       return transformBiblio(data?.biblio);
     }

@@ -5,4 +5,6 @@ type LoanType = {
   show_pickup_location: boolean;
   name_sv: string;
   name_en: string;
+  name: string;
+  isDisabled: boolean;
 };

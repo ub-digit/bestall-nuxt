@@ -5,6 +5,8 @@ export default defineNuxtConfig({
     apiSecret: process.env.SECRET_KEY || "NOT_A_SECRET",
     authBase: process.env.AUTH_BASE_URL || "https://auth.not-an-auth.com",
     githubClientId: process.env.GITHUB_CLIENT_ID || "not_your_github_client_id",
+    xaccountMapToGithub:
+      process.env.XACCOUNT_MAP_TO_GITHUB || "not_your_xaccount",
     githubClientSecret:
       process.env.GITHUB_CLIENT_SECRET || "not_your_github_client_secret",
     guClientId: process.env.GU_CLIENT_ID || "not_your_gu_client_id",
@@ -15,6 +17,14 @@ export default defineNuxtConfig({
 
     public: {
       debugInfo: process.env.DEBUG_INFO === "true" || false,
+      disableLoantypeHomeAndPickupForItemTypes:
+        process.env
+          .NUXT_PUBLIC_DISABLE_LOANTYPE_HOME_AND_PICKUP_FOR_ITEMTYPES || "",
+      disableLoantypeHomeAndPickupForNotForLoan:
+        process.env
+          .NUXT_PUBLIC_DISABLE_LOANTYPE_HOME_AND_PICKUP_FOR_NOTFORLOAN || "",
+      includeLoantypeSDForUserCategories:
+        process.env.NUXT_PUBLIC_INCLUDE_LOANTYPE_SD_FOR_USER_CATEGORIES || "",
       enabledAuth: process.env.ENABLED_AUTH || "github",
       kohaAuthUrl:
         process.env.KOHA_AUTH_URL || "https://koha-auth.not-an-auth.com/auth",
@@ -49,7 +59,7 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/main.css"],
 
-  ssr: true,
+  ssr: false,
 
   compatibilityDate: "2025-07-15",
   devtools: { enabled: false },

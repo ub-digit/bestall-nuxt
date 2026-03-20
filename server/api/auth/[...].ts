@@ -31,10 +31,54 @@ export default NuxtAuthHandler({
     },
     /* on session retrival */
     async session({ session, user, token }) {
+      console.log("Session callback called with session:", session);
+      console.log("Session callback called with user:", user);
+      console.log("Session callback called with token:", token);
+      // fetch all user details from koha
+      if (token.provider === "github") {
+        session.user.categorycode = token.userData.categorycode;
+        session.user.borrowernumber = token.userData.borrowernumber;
+        session.user.cardnumber = token.userData.cardnumber;
+        session.user.userid = token.userData.userid;
+      } else if (token.provider === "GU") {
+        // Handle GU-specific session data if needed
+      } else if (token.provider === "credentials") {
+        // Handle credentials-specific session data if needed
+      }
       return session;
     },
     /* on JWT token creation or mutation */
     async jwt({ token, user, account, profile, isNewUser }) {
+      if (account?.provider === "github") {
+        const xaccount = runtimeConfig.xaccountMapToGithub;
+        token.provider = "github";
+        if (token.provider === "github") {
+          console.log(
+            "Fetching user data from Koha for GitHub user:",
+            xaccount,
+          );
+          const userdata = await fetch(
+            runtimeConfig.public.kohaAuthUrl +
+              `/cgi-bin/koha/svc/members/get?&login_userid=${runtimeConfig.kohaUser}&login_password=${runtimeConfig.kohaPwd}&borrower=${xaccount}`,
+            {
+              method: "GET",
+              headers: { "Content-Type": "text/xml" },
+            },
+          );
+          const userdataXml = await userdata.text();
+          const userdataJson = await parseStringPromise(userdataXml, {
+            explicitArray: false,
+            mergeAttrs: true,
+          });
+          console.log("Koha user data JSON:", userdataJson);
+          token.userData = userdataJson.response.borrower; // Store the entire borrower object in the token for later use
+          return token;
+        }
+      } else if (account?.provider === "GU") {
+        token.provider = "GU";
+      } else if (account?.provider === "credentials") {
+        token.provider = "credentials";
+      }
       return token;
     },
   },
@@ -45,6 +89,14 @@ export default NuxtAuthHandler({
     GithubProvider.default({
       clientId: runtimeConfig.githubClientId,
       clientSecret: runtimeConfig.githubClientSecret,
+      async profile(profile: any) {
+        return {
+          id: profile.id,
+          name: profile.name || profile.login,
+          email: profile.email,
+          xaccount: profile.login,
+        };
+      },
     }),
     {
       id: "GU",

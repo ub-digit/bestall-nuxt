@@ -16,6 +16,8 @@ export interface Item {
   in_transit: string;
   currentlocation_id: string;
   sublocation_open_loc: boolean;
+  sublocation_paging_loc: boolean;
+  sublocation_pickup_loc: boolean;
   sublocation_name_sv: string;
   sublocation_name_en: string;
   location_id: string;

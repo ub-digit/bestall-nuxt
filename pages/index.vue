@@ -38,7 +38,7 @@ if (runtimeConfig.public.applicationIsClosed) {
               query: { view: '46GUB_KOHA', language: 'eng' },
             })
           "
-          >Länk till id 1063720 från en sökdator till engelska</NuxtLink
+          >Länk till id 1063720 från en sökdator (eng)</NuxtLink
         >
       </li>
 
@@ -62,14 +62,75 @@ if (runtimeConfig.public.applicationIsClosed) {
               query: { view: '46GUB_VU1', language: 'eng' },
             })
           "
-          >Länk till id 1063720 från icke sökdator till engelska</NuxtLink
+          >Länk till id 1063720 från icke sökdator (eng)</NuxtLink
         >
       </li>
 
       <li>
-        <NuxtLink :to="$localePath('/login')"
-          >Direkt till inloggningsidan
+        <NuxtLink
+          :to="$localePath({ path: '/login', query: { view: '46GUB_KOHA' } })"
+          >Direkt till inloggningsidan från sökdator
         </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink
+          :to="$localePath({ path: '/login', query: { language: 'eng' } })"
+          >Direkt till inloggningsidan från icke sökdator (eng)</NuxtLink
+        >
+      </li>
+
+      <li>
+        <NuxtLink
+          :to="$localePath({ path: '/closed', query: { view: '46GUB_KOHA' } })"
+          >Direkt till stängda sidan från sökdator</NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink
+          :to="
+            $localePath({
+              path: '/closed',
+              query: { view: '46GUB_VU1', language: 'eng' },
+            })
+          "
+          >Direkt till stängda sidan från icke sökdator (eng)</NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink
+          :to="$localePath({ path: '/8503', query: { view: '46GUB_KOHA' } })"
+          >Direkt till id 8503 - är bok och är endast läsesal. Inga utlånade
+          exemplar</NuxtLink
+        >
+      </li>
+    </ul>
+
+    <h3>Subscriptions</h3>
+    <ul>
+      <li>
+        <NuxtLink :to="$localePath('/189763')"
+          >Prenumerationer på olika bibliotek</NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink :to="$localePath('/176500')"
+          >Fornvännen. 1 prenumeration på ett bibliotek</NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink :to="$localePath('/178300')"
+          >2 prenumerationer på ett biblioktek</NuxtLink
+        >
+      </li>
+    </ul>
+
+    <h3>Collections</h3>
+    <ul>
+      <li>
+        <NuxtLink
+          :to="$localePath({ path: '/2756053', query: { view: '46GUB_KOHA' } })"
+          >Direkt till id 2756053 - är collection</NuxtLink
+        >
       </li>
     </ul>
 

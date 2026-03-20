@@ -38,28 +38,41 @@ function handleEvent(payload: EventPayload) {
           </li>
         </ul>
       </div>
+
       <div class="holdings-grid-content-public-note">
         <div
           v-for="(subscription, index) in subscriptionGroup.subscriptions"
           :key="index"
-          class="public-note"
+          class="public-note-item"
         >
-          <pre>{{ subscription.public_note }}</pre>
-          <div class="action">
-            <button
-              v-if="subscription.can_be_ordered"
-              @click="
-                handleEvent({
-                  biblioId: subscription.biblio_id,
-                  subscriptionId: subscription.id,
-                  typeOfEvent: 'subscriptionOrder',
-                })
-              "
-              class="btn-primary"
+          <p class="public-note-item-sublocation">
+            {{ subscription.sublocation_name }}
+            <span v-if="subscription.call_number"
+              >, {{ subscription.call_number }}</span
             >
-              {{ $t("actions.order") }}
-            </button>
-            <div v-else>{{ $t("actions.collect") }}</div>
+          </p>
+          <div class="public-note-item-content">
+            <pre>{{ subscription.public_note }}</pre>
+            <div class="action">
+              <button
+                v-if="subscription.can_be_ordered"
+                @click="
+                  handleEvent({
+                    biblioId: subscription.biblio_id,
+                    subscriptionId: subscription.id,
+                    subscriptionLocation: subscription.location_name_sv,
+                    subscriptionSublocationId: subscription.sublocation_id,
+                    subscriptionSublocation: subscription.sublocation_name_sv,
+                    subscriptionCallNumber: subscription.call_number,
+                    typeOfEvent: 'subscriptionOrder',
+                  })
+                "
+                class="btn-primary"
+              >
+                {{ $t("actions.order") }}
+              </button>
+              <div v-else>{{ $t("actions.collect") }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -73,7 +86,7 @@ function handleEvent(payload: EventPayload) {
 }
 .holdings-grid {
   display: grid;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   .holdings-grid-content-public-note {
@@ -83,7 +96,7 @@ function handleEvent(payload: EventPayload) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    .public-note {
+    .public-note-item-content {
       pre {
         overflow: scroll;
       }

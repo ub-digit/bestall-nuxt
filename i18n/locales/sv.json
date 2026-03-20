@@ -121,8 +121,26 @@
       "copy": "Exemplar",
       "location": "Placering",
       "status": "Status",
-      "action": "Åtgärd",
+      "action": "",
       "holdings": "Bestånd"
+    }
+  },
+
+  "orderForm": {
+    "labels": {
+      "location": "Var vill du hämta?",
+      "loanType": "Hur vill du låna?",
+      "reserveNotes": "Eventuell övrig information om beställningen",
+      "subscriptionNotes": "Detaljer om beställningen (obligatoriskt)"
+    },
+    "placeholders": {
+      "selectLocation": "Välj en plats",
+      "selectLoanType": "Välj en lånetyp",
+      "reserveNotes": "Till exempel: volym, nummer, tryckår",
+      "subscriptionNotes": "Ange volym, år, nummer eller sidnummer för det exemplar du vill beställa."
+    },
+    "messages": {
+      "privacyWarning": "Informationen i detta fält skrivs ut. Skriv inte personuppgifter här. <a href='https://www.ub.gu.se/sv/kontakta-oss'>Kontakta biblioteket</a> om du har frågor som rör din beställning."
     }
   },
 
@@ -135,7 +153,10 @@
     "hasAvaillableCourseBook": "Det finns tillgängliga exemplar som du kan <a href='#items-available'>hämta själv från hyllan</a>",
     "allItemsAreAvailable": "Alla exemplar är <a href='#items-available'>tillgängliga</a>",
     "numberOfPeopleInQueueOnNotAvailable": "{numberOfPeople} i kö på utlånade exemplar",
-    "unsupportedViewType": "Denna typ av material ({viewType}) har inte stöd för att visa beställningsdetaljer. Kontakta biblioteket."
+    "unsupportedViewType": "Denna typ av material ({viewType}) har inte stöd för att visa beställningsdetaljer. Kontakta biblioteket.",
+    "cannotPickUpHere": "kan ej beställas hit",
+    "libraryClosed": "stängt",
+    "cannotTemporaryPickUpHere": "kan ej beställas hit"
   },
   "status": {
     "loaned": "Utlånad till {loanedTo}",
@@ -156,7 +177,8 @@
     "queue": "Köa",
     "order": "Beställ",
     "collect": "Hämta själv från hyllan",
-    "joinQueue": "Ställ dig i kö"
+    "joinQueue": "Ställ dig i kö",
+    "submit": "Nästa"
   },
 
   "biblio": {

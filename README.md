@@ -14,11 +14,11 @@ Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduct
 
 8503 - är bok och är endast läsesal. Inga utlånade ex
 
-189763 - subscription. Prenumerationer på olika bibliotek
+189763 - Prenumerationer på olika bibliotek
 
-176500 - subscription. fornvännen. 1 prenumeration på ett bibliotek
+176500 - Fornvännen. 1 prenumeration på ett bibliotek
 
-178300 - subscritopn. 2 prenumerationer på ett biblioktek.
+178300 - 2 prenumerationer på ett biblioktek.
 
 ## Setup
 
