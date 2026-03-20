@@ -17,6 +17,10 @@ export default defineNuxtConfig({
 
     public: {
       debugInfo: process.env.DEBUG_INFO === "true" || false,
+      reserveNoteMaxLength: parseInt(
+        process.env.NUXT_PUBLIC_RESERVE_NOTE_MAX_LENGTH || "140",
+        10,
+      ),
       disableLoantypeHomeAndPickupForItemTypes:
         process.env
           .NUXT_PUBLIC_DISABLE_LOANTYPE_HOME_AND_PICKUP_FOR_ITEMTYPES || "",

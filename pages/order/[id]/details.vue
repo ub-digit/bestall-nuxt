@@ -1,6 +1,7 @@
 <template>
   <div class="order-details">
     <BiblioInfo v-if="order.biblio" :biblio="order.fullBiblio" />
+
     <form>
       <div v-if="order.subscription" class="form-component subscriptionNotes">
         <label for="subscriptionNotes">
@@ -11,6 +12,19 @@
           v-model="order.subscriptionNotes"
           :placeholder="$t('orderForm.placeholders.subscriptionNotes')"
         />
+      </div>
+
+      <div class="form-component">
+        <label for="subs">
+          {{ $t("orderForm.labels.publicNote") }}
+        </label>
+        <div
+          v-if="order.subscription"
+          id="subs"
+          class="subscription-public-note"
+        >
+          {{ currentSubscriptionOnOrder?.public_note || "" }}
+        </div>
       </div>
 
       <div class="form-component">
@@ -90,7 +104,8 @@ import type { Location } from "~/types/Location";
 import type { LoanType } from "~/types/LoanType";
 import type { Item } from "~/types/Biblio";
 
-const maxReserveNotesLength = 140;
+const maxReserveNotesLength =
+  useRuntimeConfig().public.reserveNoteMaxLength || 140;
 const currentReserveNotesLength = ref(0);
 const { status, data: authData } = useAuth();
 const route = useRoute();
@@ -184,6 +199,13 @@ const pickupLocations = computed<Location[]>(() => {
   return [];
 });
 
+const currentSubscriptionOnOrder = computed(() => {
+  if (!order.value || !order.value.subscription) return null;
+  return order.value.fullBiblio?.subscriptiongroups
+    ?.flatMap((sg: any) => sg.subscriptions)
+    .find((sub: any) => sub.id === order.value.subscription);
+});
+
 const currentItemOnOrder = computed(() => {
   if (!order.value || !order.value.item) return null;
   return order.value.fullBiblio?.items?.find(
@@ -224,6 +246,18 @@ setOrder({
   margin-bottom: var(--spacer-24);
   display: flex;
   flex-direction: column;
+}
+
+.subscription-public-note {
+  margin-top: var(--spacer-8);
+  pre {
+    overflow: scroll;
+  }
+  background-color: var(--light-light);
+  border: 1px solid var(--dark-light);
+  padding: 0.5rem;
+  border-radius: 4px;
+  white-space: pre-wrap;
 }
 
 .reserve-notes {

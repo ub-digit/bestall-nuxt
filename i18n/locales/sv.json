@@ -131,7 +131,8 @@
       "location": "Var vill du hämta?",
       "loanType": "Hur vill du låna?",
       "reserveNotes": "Eventuell övrig information om beställningen",
-      "subscriptionNotes": "Detaljer om beställningen (obligatoriskt)"
+      "subscriptionNotes": "Detaljer om beställningen (obligatoriskt)",
+      "publicNote": "Du kan beställa exemplar ur följande bestånd:"
     },
     "placeholders": {
       "selectLocation": "Välj en plats",
