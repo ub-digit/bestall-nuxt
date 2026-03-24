@@ -2,7 +2,7 @@
   <div class="order-details">
     <BiblioInfo v-if="order.biblio" :biblio="order.fullBiblio" />
 
-    <form>
+    <form @submit.prevent="submitOrder">
       <div v-if="order.subscription" class="form-component subscriptionNotes">
         <label for="subscriptionNotes">
           {{ $t("orderForm.labels.subscriptionNotes") }}
@@ -14,15 +14,11 @@
         />
       </div>
 
-      <div class="form-component">
+      <div v-if="order.subscription" class="form-component">
         <label for="subs">
           {{ $t("orderForm.labels.publicNote") }}
         </label>
-        <div
-          v-if="order.subscription"
-          id="subs"
-          class="subscription-public-note"
-        >
+        <div id="subs" class="subscription-public-note">
           {{ currentSubscriptionOnOrder?.public_note || "" }}
         </div>
       </div>
@@ -90,9 +86,14 @@
           <small v-html="$t('orderForm.messages.privacyWarning')"></small>
         </p>
       </div>
-      <button class="btn-primary" type="submit">
-        {{ $t("actions.submit") }}
-      </button>
+      <div class="actions-area">
+        <button class="btn-light" type="button" @click="goBack()">
+          {{ $t("actions.back") }}
+        </button>
+        <button class="btn-primary" type="submit">
+          {{ $t("actions.submit") }}
+        </button>
+      </div>
     </form>
 
     <pre>{{ order }}</pre>
@@ -100,6 +101,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"],
+});
 import type { Location } from "~/types/Location";
 import type { LoanType } from "~/types/LoanType";
 import type { Item } from "~/types/Biblio";
@@ -108,14 +112,23 @@ const maxReserveNotesLength =
   useRuntimeConfig().public.reserveNoteMaxLength || 140;
 const currentReserveNotesLength = ref(0);
 const { status, data: authData } = useAuth();
-const route = useRoute();
+const router = useRouter();
 const { order, setOrder, resetOrder } = useOrder();
+
+if (!order.value?.biblio) {
+  // if there's no biblio data in the order, we can't show the details page, so we redirect back to the search page
+  const route = useRoute();
+  navigateTo(
+    useLocalePath()({ path: "/order/" + route.params.id, query: route.query }),
+  );
+}
 watch(
   () => order.value?.reserveNotes,
   (newVal) => {
     currentReserveNotesLength.value = newVal ? newVal.length : 0;
   },
 );
+
 const { locale } = useI18n();
 const { data: locations, error: locationsError } = await useFetch<Location[]>(
   "/api/locations",
@@ -196,7 +209,7 @@ const pickupLocations = computed<Location[]>(() => {
       return filteredPossiblePickupLocations;
     }
   }
-  return [];
+  return possiblePickupLocations.value;
 });
 
 const currentSubscriptionOnOrder = computed(() => {
@@ -232,6 +245,16 @@ const { data: loanTypes, error: loanTypesError } = await useFetch<LoanType[]>(
   },
 );
 
+const submitOrder = () => {
+  // For demonstration, we'll just log the order data. In a real application, you'd send this to your backend API.
+  console.log("Submitting order:", order.value);
+  alert(JSON.stringify(order.value, null, 2));
+};
+
+const goBack = () => {
+  router.back();
+};
+
 setOrder({
   loanType: loanTypes.value?.filter((lt) => !lt.isDisabled)?.[0]?.id,
   location: "",
@@ -239,6 +262,10 @@ setOrder({
 </script>
 
 <style scoped>
+.actions-area {
+  display: flex;
+  justify-content: space-between;
+}
 .order-details {
   max-width: var(--reading-width);
 }

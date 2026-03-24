@@ -37,7 +37,7 @@ defineProps<{
 
     <br />
 
-    <div id="items-available" class="items">
+    <div id="items-available" class="items" v-if="biblio?.items.length">
       <ViewItemsTable
         v-if="biblio?.items"
         :items="biblio.items"

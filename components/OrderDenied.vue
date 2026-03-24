@@ -19,16 +19,20 @@ const props = defineProps<{
         />
       </svg>
       <h2>{{ $t("orderDenied.title") }}</h2>
-      <p class="description" v-html="$t('orderDenied.description')"></p>
 
-      <ul class="error-list">
+      <slot name="description">
+        <p class="description" v-html="$t('orderDenied.description')"></p>
+      </slot>
+
+      <ul v-if="error?.data?.data?.length" class="error-list">
         <li v-for="(item, index) in error?.data?.data" :key="index">
           {{ $t("orderDenied.errors." + item.code) }}
         </li>
       </ul>
       <div class="order-denied-code">
         <p>{{ $t("orderDenied.errorCode", { code: error.statusCode }) }}</p>
-        <p class="hidden">
+
+        <p v-if="useRuntimeConfig().public.debugInfo" class="error-detail">
           {{ $t("orderDenied.errorDetail", { detail: error.statusMessage }) }}
         </p>
       </div>
@@ -61,6 +65,10 @@ const props = defineProps<{
 
     .order-denied-code {
       margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
       background-color: var(--danger-dark);
       color: var(--light-light);
       padding: 1rem;

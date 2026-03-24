@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: "auth",
+});
 const { signIn } = useAuth();
 const route = useRoute();
 const runtimeConfig = useRuntimeConfig();

@@ -1,4 +1,5 @@
-import { VerifyError } from "~/types/verifyError";
+import type { VerifyError } from "~/types/verifyError";
+import { FetchError } from "ofetch";
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig();
@@ -17,9 +18,9 @@ export default defineEventHandler(async (event) => {
     if (response) {
       return "success";
     }
-  } catch (error: any) {
+  } catch (error: FetchError | any) {
     let customError: VerifyError | null = null;
-    switch (error.value.status) {
+    switch (error.response.status) {
       case 404:
         customError = {
           code: "NOT_FOUND",
@@ -47,6 +48,18 @@ export default defineEventHandler(async (event) => {
         };
         break;
       case 401:
+        customError = {
+          code: "UNAUTHORIZED",
+          detail: "Unauthorized access",
+          data: null,
+          errors: [
+            {
+              code: "UNAUTHORIZED",
+              detail: "You are not authorized to access this resource.",
+            },
+          ],
+        };
+        break;
       case 400:
         customError = {
           code: "INVALID_DATA",
@@ -82,7 +95,12 @@ export default defineEventHandler(async (event) => {
         };
     }
     if (customError) {
-      return customError;
+      throw createError({
+        statusCode:
+          errorCodes.find((e) => e.code === customError?.code)?.httpcode || 500,
+        statusMessage: customError.detail,
+        data: customError,
+      });
     }
   }
 });

@@ -107,6 +107,7 @@
   "orderDenied": {
     "title": "Det går inte att beställa",
     "description": "Något gick fel. <a href='https://www.ub.gu.se/kontakt'>Kontakta biblioteket</a> för att få hjälp.",
+    "descriptionWithMissingId": "Sök efter något att beställa på <a href='https://www.ub.gu.se/'>bibliotekets webbplats</a>.",
     "errorCode": "Felkod: {code}",
     "errorDetail": "Detaljer: {detail}",
     "errors": {
@@ -179,7 +180,8 @@
     "order": "Beställ",
     "collect": "Hämta själv från hyllan",
     "joinQueue": "Ställ dig i kö",
-    "submit": "Nästa"
+    "submit": "Nästa →",
+    "back": "← Tillbaka"
   },
 
   "biblio": {

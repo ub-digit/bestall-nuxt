@@ -41,10 +41,13 @@ const handleEvent = (payload: EventPayload) => {
     case "joinQueue":
       setOrder({
         biblio: payload.biblioId,
+        item: payload.itemId,
       });
-      alert(
-        `Join Queue event for Biblio ID: ${payload.biblioId}, Item ID: ${payload.itemId}, Type of Event: ${payload.typeOfEvent}`,
-      );
+      router.push({
+        path: `/order/${route.params.id}/details`,
+        query: { ...route.query },
+      });
+
       break;
     case "order":
       setOrder({
